@@ -1,12 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Line from './Line';
 import Keyboard from './Keyboard';
 
 const WORDS = [
-  // only 5 letter words
   'SPICE',
   'SHOUT',
   'FAIRY',
@@ -16,8 +15,6 @@ const WORDS = [
   'EAGLE',
   'FALCO',
 ];
-
-const WORD_LENGTH = 5;
 
 export default function App() {
   const [solution, setSolution] = useState('');

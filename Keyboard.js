@@ -7,10 +7,26 @@ export default function Keyboard({ setGuesses, guesses }) {
     const [letter, setLetter] = useState('');
     const row1 = "AZERTYUIOP";
     const row2 = "QSDFGHJKLM";
-    const row3 = "WXCVBN⌫⏎";
+    const row3 = "WXCVBN⌫";
 
     useEffect(() => {
-        if (letter.length === 1) {
+        if (letter == "⌫") {
+            // replace last letter encoutered in guesses with empty string
+            for (let i = 0; i < guesses.length; i++) {
+                let guess_without_spaces = guesses[i].replace(/\s/g, "");
+                if (guesses[i].length > 0 && guess_without_spaces.length < 5) {
+                    let guess_i = guesses[i].replace(/\s/g, "");
+                    let updatedGuess = "";
+                    for (let j = 0; j < guess_i.length-1; j++) {
+                        updatedGuess += guess_i[j];
+                    }
+                    setGuesses(guesses.slice(0, i).concat([updatedGuess]).concat(guesses.slice(i+1)));
+                    setLetter("");
+                    return;
+                }
+            }
+        }
+        else if (letter.length === 1) {
             for (let i = 0; i < guesses.length; i++) {
                 let guess_without_spaces = guesses[i].replace(/\s/g, "");
                 if (guess_without_spaces.length < WORD_LENGTH) {
@@ -66,14 +82,14 @@ export default function Keyboard({ setGuesses, guesses }) {
 const styles = StyleSheet.create({
     keyboard: {
         flexDirection: 'column',
-      },
-      row: {
+    },
+    row: {
         flexDirection: 'row',
         justifyContent: 'center',
-      },
-      letter: {
+    },
+    letter: {
         fontSize: 20,
         borderColor: '#000',
         padding: 11,
-      },
+    },
 });

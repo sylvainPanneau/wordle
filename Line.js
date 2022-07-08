@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function Line({ guess, solution }) {
-    console.log("solution: ", solution);
     // save guess as guess plus spaces to obtain a string of length WORD_LENGTH
     let guessFilled = guess
     if (guess.length < solution.length) {
