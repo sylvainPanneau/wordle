@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function Line({ guess, solution }) {
     // save guess as guess plus spaces to obtain a string of length WORD_LENGTH
+    useEffect(() => {
+        console.log("solution: " + solution);
+    }, []);
     let guessFilled = guess
     if (guess.length < solution.length) {
         guessFilled = guess + " ".repeat(solution.length - guess.length);
