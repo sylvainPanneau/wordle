@@ -5,16 +5,8 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import Line from './Line';
 import Keyboard from './Keyboard';
 
-const WORDS = [
-  'SPICE',
-  'SHOUT',
-  'FAIRY',
-  'BUNNY',
-  'CLOWN',
-  'DUCKS',
-  'EAGLE',
-  'FALCO',
-];
+// import ./assets/words.json
+const WORDS = require('./assets/words.json');
 
 export default function App() {
   const [solution, setSolution] = useState('');
@@ -23,7 +15,9 @@ export default function App() {
   const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
-    setSolution(WORDS[Math.floor(Math.random() * WORDS.length)]);
+    // select random word from WORDS
+    const randomWord = WORDS[Math.floor(Math.random() * WORDS.length)];
+    setSolution(randomWord);
   }, []);
 
   useEffect(() => {
