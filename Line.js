@@ -15,7 +15,7 @@ export default function Line({ guess, solution }) {
             {guessFilled.split('').map((letter, index) => {
                 const isLetterInSolution = solution.includes(letter);
                 return (
-                    <Text key={index} style={letter === solution[index] ? styles.correct : isLetterInSolution ? styles.presentLetter : styles.incorrect}>
+                    <Text key={index} style={[letter === solution[index] ? styles.correct : isLetterInSolution ? styles.presentLetter : styles.incorrect, styles.letter]}>
                         {letter}
                     </Text>
                 )
@@ -38,6 +38,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderColor: '#000',
         backgroundColor: '#fff',
+        margin: 2,
+    },
+    letter: {
         margin: 2,
     },
     correct: {
