@@ -7,7 +7,7 @@ export default function Keyboard({ setGuesses, guesses }) {
     const [letter, setLetter] = useState('');
     const row1 = "AZERTYUIOP";
     const row2 = "QSDFGHJKLM";
-    const row3 = "WXCVBN⌫";
+    const row3 = "WXCVBN";
 
     useEffect(() => {
         if (letter == "⌫") {

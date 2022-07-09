@@ -39,7 +39,7 @@ export default function App() {
       {
         gameOver && (
           <View style={styles.endGame}>
-            <Text style={[styles.endGameText, styles.gameOverText]}>Perdu bouffon</Text>
+            <Text style={[styles.endGameText, styles.gameOverText]}>Perdu bouffon {solution}</Text>
             <TouchableOpacity style={styles.playAgain} onPress={
               () => {
                 setSolution(WORDS[Math.floor(Math.random() * WORDS.length)]);
@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     padding: 10,
     borderRadius: 10,
+    textAlign: 'center',
   },
   gameOverText: {
     color: '#ff5a3e',
