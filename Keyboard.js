@@ -17,10 +17,10 @@ export default function Keyboard({ setGuesses, guesses }) {
                 if (guesses[i].length > 0 && guess_without_spaces.length < 5) {
                     let guess_i = guesses[i].replace(/\s/g, "");
                     let updatedGuess = "";
-                    for (let j = 0; j < guess_i.length-1; j++) {
+                    for (let j = 0; j < guess_i.length - 1; j++) {
                         updatedGuess += guess_i[j];
                     }
-                    setGuesses(guesses.slice(0, i).concat([updatedGuess]).concat(guesses.slice(i+1)));
+                    setGuesses(guesses.slice(0, i).concat([updatedGuess]).concat(guesses.slice(i + 1)));
                     setLetter("");
                     return;
                 }
@@ -28,7 +28,12 @@ export default function Keyboard({ setGuesses, guesses }) {
         }
         else if (letter.length === 1) {
             for (let i = 0; i < guesses.length; i++) {
-                let guess_without_spaces = guesses[i].replace(/\s/g, "");
+                let guess_without_spaces = "";
+                for (let j = 0; j < guesses[i].length; j++) {
+                    if (guesses[i][j] != " ") {
+                        guess_without_spaces += guesses[i][j];
+                    }
+                }
                 if (guess_without_spaces.length < WORD_LENGTH) {
                     const updated_guess = guess_without_spaces + letter + " ".repeat(WORD_LENGTH - guess_without_spaces.length - 1);
                     setGuesses(guesses.map((guess, index) => {
@@ -54,8 +59,7 @@ export default function Keyboard({ setGuesses, guesses }) {
                             <Text style={styles.letter}>{letter}</Text>
                         </TouchableOpacity>
                     )
-                }
-                )}
+                })}
             </View>
             <View style={styles.row}>
                 {row2.split('').map((letter, index) => {
