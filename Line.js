@@ -42,6 +42,9 @@ const styles = StyleSheet.create({
     },
     letter: {
         margin: 2,
+        fontWeight: 'bold',
+        fontSize: 30,
+        padding: 10,
     },
     correct: {
         flex: 1,
