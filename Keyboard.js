@@ -1,6 +1,7 @@
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useState, useEffect } from "react";
 import React from "react";
+import KeyPop from "./KeyPop";
 const WORD_LENGTH = 5;
 
 export default function Keyboard({ setGuesses, guesses }) {
@@ -55,27 +56,21 @@ export default function Keyboard({ setGuesses, guesses }) {
             <View style={styles.row}>
                 {row1.split('').map((letter, index) => {
                     return (
-                        <TouchableOpacity key={index} onPress={() => setLetter(letter)}>
-                            <Text style={styles.letter}>{letter}</Text>
-                        </TouchableOpacity>
+                        <KeyPop style={styles.letter} letter={letter} setLetter={setLetter} key={index} />
                     )
                 })}
             </View>
             <View style={styles.row}>
                 {row2.split('').map((letter, index) => {
                     return (
-                        <TouchableOpacity key={index} onPress={() => setLetter(letter)}>
-                            <Text style={styles.letter}>{letter}</Text>
-                        </TouchableOpacity>
+                        <KeyPop letter={letter} setLetter={setLetter} key={index}/>
                     )
                 })}
             </View>
             <View style={styles.row}>
                 {row3.split('').map((letter, index) => {
                     return (
-                        <TouchableOpacity key={index} onPress={() => setLetter(letter)}>
-                            <Text style={styles.letter}>{letter}</Text>
-                        </TouchableOpacity>
+                        <KeyPop letter={letter} setLetter={setLetter} key={index} />
                     )
                 })}
             </View>
@@ -86,6 +81,7 @@ export default function Keyboard({ setGuesses, guesses }) {
 const styles = StyleSheet.create({
     keyboard: {
         flexDirection: 'column',
+        width: '100%',
     },
     row: {
         flexDirection: 'row',

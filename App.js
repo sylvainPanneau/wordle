@@ -4,6 +4,7 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import Line from './Line';
 import Keyboard from './Keyboard';
+import KeyPop from './KeyPop';
 
 // import ./assets/words.json
 const WORDS = require('./assets/words.json');
