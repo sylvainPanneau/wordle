@@ -1,15 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import * as Haptics from 'expo-haptics';
 
-export default function KeyPop({ letter, setLetter }) {
+export default function KeyPop({ letter, setLetter, color, letterState }) {
     const [pressed, setPressed] = useState(false);
     function animate() {
         setPressed(true);
         setTimeout(() => {
             setPressed(false);
-        }, 20);
+        }, 5);
     }
+    useEffect(() => {
+        console.log("color : " + color);
+    }, []);
 
     return (
         <View style={styles.keyPop}>
@@ -26,7 +29,15 @@ export default function KeyPop({ letter, setLetter }) {
                         </View>
                     )
                 }
-                <Text style={styles.letter}>{letter}</Text>
+                <Text style={
+                    [
+                        styles.letter,
+                        { backgroundColor: color },
+                        letterState[letter] === "correct" || letterState[letter] === "incorrect" || letterState[letter] === "present" ? { color: "white" } : { color: "black" }
+                    ]
+                }>
+                    {letter}
+                </Text>
             </TouchableOpacity>
         </View>
 
@@ -42,13 +53,13 @@ const styles = StyleSheet.create({
     letterContainer: {
         flexDirection: 'column',
         justifyContent: 'center',
-        padding: 10,
+        padding: 5,
     },
     letter: {
         fontSize: 20,
-        borderRadius: 10,
         textAlign: 'center',
-        margin: 0.7,
+        borderRadius: 5,
+        padding: 5,
     },
     offSetletter: {
         fontSize: 25,

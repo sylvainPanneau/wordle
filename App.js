@@ -8,12 +8,33 @@ import KeyPop from './KeyPop';
 
 // import ./assets/words.json
 const WORDS = require('./assets/words.json');
+const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 export default function App() {
   const [solution, setSolution] = useState('');
   const [guesses, setGuesses] = useState(Array(6).fill(''));
   const [won, setWon] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  // letterState is a json object that keeps track of the state of each letter. Initially, all letters are "incorrect"
+  const [letterState, setLetterState] = useState(LETTERS.split('').reduce((acc, letter) => {
+    acc[letter] = 'unknown';
+    return acc;
+  }, {}));
+
+  function playAgain() {
+    setSolution(WORDS[Math.floor(Math.random() * WORDS.length)]);
+    setGuesses(Array(6).fill(''));
+    setWon(false);
+    setGameOver(false);
+    setLetterState(LETTERS.split('').reduce((acc, letter) => {
+      acc[letter] = 'unknown';
+      return acc;
+    }, {}));
+  }
+
+  useEffect(() => {
+    console.log('letterState', letterState);
+  }, [letterState]);
 
   useEffect(() => {
     // select random word from WORDS
@@ -41,14 +62,7 @@ export default function App() {
         gameOver && (
           <View style={styles.endGame}>
             <Text style={[styles.endGameText, styles.gameOverText]}>Perdu bouffon {solution}</Text>
-            <TouchableOpacity style={styles.playAgain} onPress={
-              () => {
-                setSolution(WORDS[Math.floor(Math.random() * WORDS.length)]);
-                setGuesses(Array(6).fill(''));
-                setWon(false);
-                setGameOver(false);
-              }
-            }>
+            <TouchableOpacity style={styles.playAgain} onPress={() => playAgain()}>
               <Text style={styles.playAgainText}>↺</Text>
             </TouchableOpacity>
           </View>
@@ -58,14 +72,7 @@ export default function App() {
         won && (
           <View style={styles.endGame}>
             <Text style={[styles.endGameText, styles.wonText]}>Bien ouej</Text>
-            <TouchableOpacity style={styles.playAgain} onPress={
-              () => {
-                setSolution(WORDS[Math.floor(Math.random() * WORDS.length)]);
-                setGuesses(Array(6).fill(''));
-                setWon(false);
-                setGameOver(false);
-              }
-            }>
+            <TouchableOpacity style={styles.playAgain} onPress={() => playAgain()}>
               <Text style={styles.playAgainText}>↺</Text>
             </TouchableOpacity>
           </View>
@@ -74,11 +81,11 @@ export default function App() {
       <View style={styles.guessBox}>
         {
           guesses.map((guess, index) => {
-            return <Line guess={guess} key={index} solution={solution} />
+            return <Line guess={guess} key={index} solution={solution} setLetterState={setLetterState} letterState={letterState} />
           })
         }
       </View>
-      <Keyboard setGuesses={setGuesses} guesses={guesses} />
+      <Keyboard setGuesses={setGuesses} guesses={guesses} letterState={letterState} />
       <StatusBar style="dark" hidden={true} />
     </View>
   );
@@ -100,7 +107,6 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   endGame: {
-    // center of the screen
     position: 'absolute',
     top: 0,
     left: 0,

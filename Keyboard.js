@@ -4,7 +4,7 @@ import React from "react";
 import KeyPop from "./KeyPop";
 const WORD_LENGTH = 5;
 
-export default function Keyboard({ setGuesses, guesses }) {
+export default function Keyboard({ setGuesses, guesses, letterState }) {
     const [letter, setLetter] = useState('');
     const row1 = "AZERTYUIOP";
     const row2 = "QSDFGHJKLM";
@@ -56,21 +56,51 @@ export default function Keyboard({ setGuesses, guesses }) {
             <View style={styles.row}>
                 {row1.split('').map((letter, index) => {
                     return (
-                        <KeyPop style={styles.letter} letter={letter} setLetter={setLetter} key={index} />
+                        <KeyPop
+                            letter={letter}
+                            setLetter={setLetter}
+                            letterState={letterState}
+                            key={index}
+                            color={
+                                letterState[letter] == 'correct' ? "#3eaa42" :
+                                    letterState[letter] == 'incorrect' ? "#8e8e8e" :
+                                        letterState[letter] == 'present' ? "#cd8729" : null
+                            }
+                        />
                     )
                 })}
             </View>
             <View style={styles.row}>
                 {row2.split('').map((letter, index) => {
                     return (
-                        <KeyPop letter={letter} setLetter={setLetter} key={index}/>
+                        <KeyPop
+                            letter={letter}
+                            setLetter={setLetter}
+                            letterState={letterState}
+                            key={index}
+                            color={
+                                letterState[letter] == 'correct' ? "#3eaa42" :
+                                    letterState[letter] == 'incorrect' ? "#8e8e8e" :
+                                        letterState[letter] == 'present' ? "#cd8729" : null
+                            }
+                        />
                     )
                 })}
             </View>
             <View style={styles.row}>
                 {row3.split('').map((letter, index) => {
                     return (
-                        <KeyPop letter={letter} setLetter={setLetter} key={index} />
+                        <KeyPop
+                            letter={letter}
+                            setLetter={setLetter}
+                            letterState={letterState}
+                            key={index}
+                            color={
+                                letterState[letter] === 'correct' ? "#3eaa42" :
+                                    letterState[letter] == 'incorrect' ? "#8e8e8e" :
+                                        letterState[letter] == 'present' ? "#cd8729" : null
+                            }
+                        />
                     )
                 })}
             </View>
@@ -81,15 +111,9 @@ export default function Keyboard({ setGuesses, guesses }) {
 const styles = StyleSheet.create({
     keyboard: {
         flexDirection: 'column',
-        width: '100%',
     },
     row: {
         flexDirection: 'row',
         justifyContent: 'center',
-    },
-    letter: {
-        fontSize: 20,
-        borderColor: '#000',
-        padding: 11,
     },
 });

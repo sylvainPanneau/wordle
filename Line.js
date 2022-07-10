@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function Line({ guess, solution }) {
+export default function Line({ guess, solution, setLetterState, letterState }) {
     // save guess as guess plus spaces to obtain a string of length WORD_LENGTH
-    useEffect(() => {
-        console.log("solution: " + solution);
-    }, []);
     let guessFilled = guess
     if (guess.length < solution.length) {
         guessFilled = guess + " ".repeat(solution.length - guess.length);
@@ -15,7 +12,28 @@ export default function Line({ guess, solution }) {
             {guessFilled.split('').map((letter, index) => {
                 const isLetterInSolution = solution.includes(letter);
                 return (
-                    <Text key={index} style={[letter === solution[index] ? styles.correct : isLetterInSolution ? styles.presentLetter : styles.incorrect, styles.letter]}>
+                    <Text key={index}
+                        style={[letter === solution[index] ? styles.correct : isLetterInSolution ? styles.presentLetter : styles.incorrect, styles.letter]}
+                        onTextLayout={() => {
+                            if(letter == solution[index]){
+                                setLetterState({
+                                    ...letterState,
+                                    [letter]: "correct"
+                                  });
+                            }
+                            else if(isLetterInSolution){
+                                setLetterState({
+                                    ...letterState,
+                                    [letter]: "present"
+                                  });
+                            }
+                            else{
+                                setLetterState({
+                                    ...letterState,
+                                    [letter]: "incorrect"
+                                  });
+                            }
+                        }}>
                         {letter}
                     </Text>
                 )
@@ -45,32 +63,30 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 30,
         padding: 10,
+        borderRadius: 6,
     },
     correct: {
         flex: 1,
-        color: 'black',
-        backgroundColor: '#0f0',
+        color: 'white',
+        backgroundColor: '#3eaa42',
         borderColor: '#000',
         padding: 20,
-        borderWidth: 1,
         textAlign: 'center',
     },
     incorrect: {
         flex: 1,
         color: 'white',
-        backgroundColor: 'lightgrey',
+        backgroundColor: '#8e8e8e',
         borderColor: '#000',
         padding: 20,
-        borderWidth: 1,
         textAlign: 'center',
     },
     presentLetter: {
         flex: 1,
-        color: 'black',
-        backgroundColor: 'yellow',
+        color: 'white',
+        backgroundColor: '#cd8729',
         borderColor: '#000',
         padding: 20,
-        borderWidth: 1,
         textAlign: 'center',
     },
 })
