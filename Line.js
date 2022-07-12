@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import AnimatedLetter from './AnimatedLetter';
 
 export default function Line({ guess, solution, setLetterState, letterState }) {
     // save guess as guess plus spaces to obtain a string of length WORD_LENGTH
@@ -11,31 +12,19 @@ export default function Line({ guess, solution, setLetterState, letterState }) {
         <View style={styles.line}>
             {guessFilled.split('').map((letter, index) => {
                 const isLetterInSolution = solution.includes(letter);
+                let guess_without_spaces = guess.replace(/\s/g, "");
                 return (
-                    <Text key={index}
-                        style={[letter === solution[index] ? styles.correct : isLetterInSolution ? styles.presentLetter : styles.incorrect, styles.letter]}
-                        onTextLayout={() => {
-                            if(letter == solution[index]){
-                                setLetterState({
-                                    ...letterState,
-                                    [letter]: "correct"
-                                  });
-                            }
-                            else if(isLetterInSolution){
-                                setLetterState({
-                                    ...letterState,
-                                    [letter]: "present"
-                                  });
-                            }
-                            else{
-                                setLetterState({
-                                    ...letterState,
-                                    [letter]: "incorrect"
-                                  });
-                            }
-                        }}>
-                        {letter}
-                    </Text>
+                    <AnimatedLetter
+                        key={index}
+                        index={index}
+                        letter={letter}
+                        solution={solution}
+                        letterState={letterState}
+                        letterStateValue={letter == solution[index] ? "correct" : isLetterInSolution ? "present" : "incorrect"}
+                        setLetterState={setLetterState}
+                        readyToFlip={guess_without_spaces.length === solution.length}
+                    >
+                    </AnimatedLetter>
                 )
             })}
         </View>
