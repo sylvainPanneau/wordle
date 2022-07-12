@@ -18,11 +18,11 @@ export default function Line({ guess, solution, setLetterState, letterState }) {
                         key={index}
                         index={index}
                         letter={letter}
-                        solution={solution}
                         letterState={letterState}
                         letterStateValue={letter == solution[index] ? "correct" : isLetterInSolution ? "present" : "incorrect"}
                         setLetterState={setLetterState}
                         readyToFlip={guess_without_spaces.length === solution.length}
+                        color={letter == solution[index] ? "#3eaa42" : isLetterInSolution ? "#cd8729" : "#8e8e8e"}
                     >
                     </AnimatedLetter>
                 )
