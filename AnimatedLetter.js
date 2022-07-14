@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Animated, Platform } from 'react-native';
 
-export default function AnimatedLetter({ index, letter, letterState, letterStateValue, setLetterState, readyToFlip, color }) {
+export default function AnimatedLetter({ index, letter, letterState, setLetterState, readyToFlip, color, letterStateValue }) {
     // Component that renders a letter capable of vertical flipping
 
     const [flip, setFlip] = useState(new Animated.Value(0));
@@ -11,33 +11,35 @@ export default function AnimatedLetter({ index, letter, letterState, letterState
     const [localColor, setLocalColor] = useState("");
 
     useEffect(() => {
-        console.log("letterStateValue : " + letterStateValue);
-        if (letterStateValue == "correct") {
+        if (letterStateValue === "correct") {
+            console.log("letter " + letter + " is correct");
             setLetterState({
                 ...letterState,
                 [letter]: "correct"
             });
         }
-        else if (letterStateValue == "present") {
+        else if (letterStateValue === "present") {
+            console.log("letter " + letter + " is present");
             setLetterState({
                 ...letterState,
                 [letter]: "present"
             });
         }
         else {
+            console.log("letter " + letter + " is incorrect");
             setLetterState({
                 ...letterState,
                 [letter]: "incorrect"
             });
         }
+        // Personal note : keeping that whole block (above) oustide of the if makes the keyboard update the right way.
+        // I suppose working here might be a good starting point.
+
     }, [letterStateValue]);
 
     useEffect(() => {
-        setHasFlipped(false);
-    }, [hasFlipped]);
-
-    useEffect(() => {
         if (readyToFlip) {
+            setHasFlipped(true);
             setTimeout(() => {
                 setTimeout(() => {
                     setLocalColor(color);
@@ -52,7 +54,6 @@ export default function AnimatedLetter({ index, letter, letterState, letterState
                 });
             }, index * 400);
         }
-        setHasFlipped(true);
     }, [readyToFlip]);
 
     return (

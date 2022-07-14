@@ -10,20 +10,21 @@ export default function KeyPop({ letter, setLetter, color, letterState }) {
             setPressed(false);
         }, 5);
     }
-    useEffect(() => {
-        console.log("color : " + color);
-    }, []);
 
     return (
         <View style={styles.keyPop}>
             <TouchableOpacity style={styles.letterContainer}
                 onPressIn={() => { setPressed(true); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
-                onPressOut={() => { setPressed(false); setLetter(letter); }}
+                onPressOut={() => {
+                    setPressed(false);
+                    if (letter === "ENTER") setSubmitted(true);
+                    else setLetter(letter);
+                }}
                 onPress={() => { animate(); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
                 activeOpacity={1}
             >
                 {
-                    pressed && (
+                    (pressed && letter != "ENTER") && (
                         <View style={styles.offSetletterContainer}>
                             <Text style={styles.offSetletter}>{letter}</Text>
                         </View>

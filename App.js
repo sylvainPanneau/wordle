@@ -15,6 +15,7 @@ export default function App() {
   const [guesses, setGuesses] = useState(Array(6).fill(''));
   const [won, setWon] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   // letterState is a json object that keeps track of the state of each letter. Initially, all letters are "incorrect"
   const [letterState, setLetterState] = useState(LETTERS.split('').reduce((acc, letter) => {
     acc[letter] = 'unknown';
@@ -85,7 +86,7 @@ export default function App() {
           })
         }
       </View>
-      <Keyboard setGuesses={setGuesses} guesses={guesses} letterState={letterState} />
+      <Keyboard setGuesses={setGuesses} guesses={guesses} letterState={letterState} setSubmitted={setSubmitted} submitted={submitted} />
       <StatusBar style="dark" hidden={true} />
     </View>
   );

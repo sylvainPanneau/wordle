@@ -1,14 +1,14 @@
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Button, Pressable, TouchableHighlight, TouchableNativeFeedback } from "react-native";
 import { useState, useEffect } from "react";
 import React from "react";
 import KeyPop from "./KeyPop";
 const WORD_LENGTH = 5;
 
-export default function Keyboard({ setGuesses, guesses, letterState }) {
+export default function Keyboard({ setGuesses, guesses, letterState, setSubmitted }) {
     const [letter, setLetter] = useState('');
     const row1 = "AZERTYUIOP";
     const row2 = "QSDFGHJKLM";
-    const row3 = "WXCVBN";
+    const row3 = "WXCVBN⌫";
 
     useEffect(() => {
         if (letter == "⌫") {
@@ -104,6 +104,12 @@ export default function Keyboard({ setGuesses, guesses, letterState }) {
                     )
                 })}
             </View>
+            <KeyPop
+                letter="ENTER"
+                setLetter={setLetter}
+                letterState={letterState}
+                setSubmitted={setSubmitted}
+            />
         </View>
     );
 }
@@ -115,5 +121,15 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         justifyContent: 'center',
+    },
+    enterButton: {
+        marginTop: 10,
+        marginBottom: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    enterText: {
+        fontSize: 20,
+        textAlign: 'center',
     },
 });

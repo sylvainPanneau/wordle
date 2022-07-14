@@ -3,6 +3,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import AnimatedLetter from './AnimatedLetter';
 
 export default function Line({ guess, solution, setLetterState, letterState }) {
+    function computeLetterStateValue(letter, index){
+        if(letter == solution[index]) return "correct";
+        else if(solution.includes(letter)) return "present";
+        else return "incorrect";
+    }
     // save guess as guess plus spaces to obtain a string of length WORD_LENGTH
     let guessFilled = guess
     if (guess.length < solution.length) {
@@ -19,7 +24,7 @@ export default function Line({ guess, solution, setLetterState, letterState }) {
                         index={index}
                         letter={letter}
                         letterState={letterState}
-                        letterStateValue={letter == solution[index] ? "correct" : isLetterInSolution ? "present" : "incorrect"}
+                        letterStateValue={computeLetterStateValue(letter, index)}
                         setLetterState={setLetterState}
                         readyToFlip={guess_without_spaces.length === solution.length}
                         color={letter == solution[index] ? "#3eaa42" : isLetterInSolution ? "#cd8729" : "#8e8e8e"}
