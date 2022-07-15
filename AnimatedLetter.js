@@ -11,6 +11,14 @@ export default function AnimatedLetter({ index, letter, letterState, setLetterSt
     const [localColor, setLocalColor] = useState("");
 
     useEffect(() => {
+        if(letterStateValue === "incorrect"){
+            console.log("letter " + letter + " is incorrect");
+            setLetterState({
+                ...letterState,
+                [letter]: "incorrect"
+            });
+        }
+
         if (letterStateValue === "correct") {
             console.log("letter " + letter + " is correct");
             setLetterState({
@@ -25,17 +33,7 @@ export default function AnimatedLetter({ index, letter, letterState, setLetterSt
                 [letter]: "present"
             });
         }
-        else {
-            console.log("letter " + letter + " is incorrect");
-            setLetterState({
-                ...letterState,
-                [letter]: "incorrect"
-            });
-        }
-        // Personal note : keeping that whole block (above) oustide of the if makes the keyboard update the right way.
-        // I suppose working here might be a good starting point.
-
-    }, [letterStateValue]);
+    }, [letter]);
 
     useEffect(() => {
         if (readyToFlip) {

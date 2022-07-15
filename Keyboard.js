@@ -4,18 +4,29 @@ import React from "react";
 import KeyPop from "./KeyPop";
 const WORD_LENGTH = 5;
 
-export default function Keyboard({ setGuesses, guesses, letterState, setSubmitted }) {
+export default function Keyboard({ setGuesses, guesses, letterState, setSubmitted, submitted }) {
     const [letter, setLetter] = useState('');
+    const [__index, setIndex] = useState(0);
+    const [guess, setGuess] = useState('');
+    const [wasSubmitted, setWasSubmitted] = useState(false);
     const row1 = "AZERTYUIOP";
     const row2 = "QSDFGHJKLM";
     const row3 = "WXCVBN⌫";
+
+    function isFirstGuess(guess) {
+        return guesses[0] === guess;
+    }
+
+    useEffect(() => {
+        if (!isFirstGuess(guess) && guess.length >= 3) setWasSubmitted(false);
+    }, [guess]);
 
     useEffect(() => {
         if (letter == "⌫") {
             // replace last letter encoutered in guesses with empty string
             for (let i = 0; i < guesses.length; i++) {
                 let guess_without_spaces = guesses[i].replace(/\s/g, "");
-                if (guesses[i].length > 0 && guess_without_spaces.length < 5) {
+                if (guesses[i].length > 0) {
                     let guess_i = guesses[i].replace(/\s/g, "");
                     let updatedGuess = "";
                     for (let j = 0; j < guess_i.length - 1; j++) {
@@ -35,6 +46,22 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
                         guess_without_spaces += guesses[i][j];
                     }
                 }
+                setGuess(guess_without_spaces + letter);
+
+                // TRYING TO GET THE LAST GUESS (AKA THE WORD WE WRITE ON THE CURRENT LINE) 
+                // AND SEE IF IT IS OF LENGTH 5 AND !WASSUBMITTED, THEN WE BREAK (WE DON'T ADD A LETTER TO NEXT LINE)
+
+                // THE PROBLEM : I can't manage to get the last guess properly... It always returns the previous guess 
+                // so of course, the condition at line 64 evaluates to true because we have length 5...
+
+                let lastGuessWithoutSpaces = "";
+                for (let j = guesses.length - 1; j >= 0; j--) {
+                    lastGuessWithoutSpaces = guesses[j].replace(/\s/g, "");
+                }
+
+                console.log("lastGuessWithoutSpaces: " + lastGuessWithoutSpaces);
+
+                if (lastGuessWithoutSpaces.length === WORD_LENGTH && !wasSubmitted) break;
                 if (guess_without_spaces.length < WORD_LENGTH) {
                     const updated_guess = guess_without_spaces + letter + " ".repeat(WORD_LENGTH - guess_without_spaces.length - 1);
                     setGuesses(guesses.map((guess, index) => {
@@ -42,8 +69,7 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
                             return updated_guess;
                         }
                         return guess;
-                    }
-                    ));
+                    }));
                     setLetter('');
                     return;
                 }
@@ -60,6 +86,10 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
                             letter={letter}
                             setLetter={setLetter}
                             letterState={letterState}
+                            submitted={submitted}
+                            guesses={guesses}
+                            wasSubmitted={wasSubmitted}
+                            setWasSubmitted={setWasSubmitted}
                             key={index}
                             color={
                                 letterState[letter] == 'correct' ? "#3eaa42" :
@@ -77,6 +107,10 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
                             letter={letter}
                             setLetter={setLetter}
                             letterState={letterState}
+                            submitted={submitted}
+                            guesses={guesses}
+                            wasSubmitted={wasSubmitted}
+                            setWasSubmitted={setWasSubmitted}
                             key={index}
                             color={
                                 letterState[letter] == 'correct' ? "#3eaa42" :
@@ -94,6 +128,10 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
                             letter={letter}
                             setLetter={setLetter}
                             letterState={letterState}
+                            submitted={submitted}
+                            wasSubmitted={wasSubmitted}
+                            setWasSubmitted={setWasSubmitted}
+                            guesses={guesses}
                             key={index}
                             color={
                                 letterState[letter] === 'correct' ? "#3eaa42" :
@@ -109,6 +147,10 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
                 setLetter={setLetter}
                 letterState={letterState}
                 setSubmitted={setSubmitted}
+                guesses={guesses}
+                submitted={submitted}
+                wasSubmitted={wasSubmitted}
+                setWasSubmitted={setWasSubmitted}
             />
         </View>
     );

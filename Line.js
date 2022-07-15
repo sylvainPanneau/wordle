@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import AnimatedLetter from './AnimatedLetter';
 
-export default function Line({ guess, solution, setLetterState, letterState }) {
-    function computeLetterStateValue(letter, index){
-        if(letter == solution[index]) return "correct";
-        else if(solution.includes(letter)) return "present";
+export default function Line({ guess, solution, setLetterState, letterState, submitted, guesses }) {
+    function computeLetterStateValue(letter, index) {
+        if (letter == solution[index]) return "correct";
+        else if (solution.includes(letter)) return "present";
         else return "incorrect";
     }
     // save guess as guess plus spaces to obtain a string of length WORD_LENGTH
@@ -13,6 +13,17 @@ export default function Line({ guess, solution, setLetterState, letterState }) {
     if (guess.length < solution.length) {
         guessFilled = guess + " ".repeat(solution.length - guess.length);
     }
+
+    function readyToFlip(guess) {
+        // return true if all letters in guess have their submitted[letter] value set to true
+        for (let i = 0; i < guess.length; i++) {
+            if (!submitted[guess[i]]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     return (
         <View style={styles.line}>
             {guessFilled.split('').map((letter, index) => {
@@ -26,7 +37,7 @@ export default function Line({ guess, solution, setLetterState, letterState }) {
                         letterState={letterState}
                         letterStateValue={computeLetterStateValue(letter, index)}
                         setLetterState={setLetterState}
-                        readyToFlip={guess_without_spaces.length === solution.length}
+                        readyToFlip={readyToFlip(guessFilled) && guess_without_spaces.length == solution.length}
                         color={letter == solution[index] ? "#3eaa42" : isLetterInSolution ? "#cd8729" : "#8e8e8e"}
                     >
                     </AnimatedLetter>

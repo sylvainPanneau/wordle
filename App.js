@@ -15,8 +15,8 @@ export default function App() {
   const [guesses, setGuesses] = useState(Array(6).fill(''));
   const [won, setWon] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  // letterState is a json object that keeps track of the state of each letter. Initially, all letters are "incorrect"
+  const [submitted, setSubmitted] = useState(LETTERS.split('').map(letter => false));
+  // letterState is a json object that keeps track of the state of each letter. Initially, all letters are "unknown"
   const [letterState, setLetterState] = useState(LETTERS.split('').reduce((acc, letter) => {
     acc[letter] = 'unknown';
     return acc;
@@ -31,11 +31,8 @@ export default function App() {
       acc[letter] = 'unknown';
       return acc;
     }, {}));
+    setSubmitted(LETTERS.split('').map(letter => false));
   }
-
-  useEffect(() => {
-    console.log('letterState', letterState);
-  }, [letterState]);
 
   useEffect(() => {
     // select random word from WORDS
@@ -82,7 +79,7 @@ export default function App() {
       <View style={styles.guessBox}>
         {
           guesses.map((guess, index) => {
-            return <Line guess={guess} key={index} solution={solution} setLetterState={setLetterState} letterState={letterState} />
+            return <Line guess={guess} key={index} solution={solution} setLetterState={setLetterState} letterState={letterState} setSubmitted={setSubmitted} submitted={submitted} guesses={guesses} />
           })
         }
       </View>
