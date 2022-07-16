@@ -24,18 +24,35 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
     useEffect(() => {
         if (letter == "⌫") {
             // replace last letter encoutered in guesses with empty string
-            for (let i = 0; i < guesses.length; i++) {
-                let guess_without_spaces = guesses[i].replace(/\s/g, "");
-                if (guesses[i].length > 0) {
-                    let guess_i = guesses[i].replace(/\s/g, "");
-                    let updatedGuess = "";
-                    for (let j = 0; j < guess_i.length - 1; j++) {
-                        updatedGuess += guess_i[j];
+            let updated_guess = "";
+            let i = 0;
+            for (let i = guesses.length - 1; i >= 0; i--) {
+                let current = guesses[i].replace(/\s/g, "");
+                if (current != "") {
+                    for (let j = 0; j < current.length - 1; j++) {
+                        updated_guess += current[j];
                     }
-                    setGuesses(guesses.slice(0, i).concat([updatedGuess]).concat(guesses.slice(i + 1)));
-                    setLetter("");
-                    return;
+                    console.log("updated_guess: " + updated_guess);
+                    break;
                 }
+            }
+            let newGuesses = [...guesses];
+            let indexToReplace = 0;
+            console.log("updated_guess : " + updated_guess);
+            for (let i = 0; i < newGuesses.length; i++) {
+                console.log("newGuesses[" + i + "]: " + newGuesses[i]);
+                // if newGuess[i] without its last letter == updated_guess indexToReplace = i
+                if (newGuesses[i].replace(/\s/g, "").slice(0, -1) == updated_guess) {
+                    indexToReplace = i;
+                    break;
+                }
+            }
+            newGuesses[indexToReplace] = updated_guess;
+            console.log("newGuesses[indexToRepalce]: " + newGuesses[indexToReplace]);
+            if (newGuesses[indexToReplace].length > 0) {
+                setGuesses(newGuesses);
+                setGuess(newGuesses[indexToReplace]);
+                setLetter('');
             }
         }
         else if (letter.length === 1) {
@@ -56,7 +73,12 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
 
                 let lastGuessWithoutSpaces = "";
                 for (let j = guesses.length - 1; j >= 0; j--) {
-                    lastGuessWithoutSpaces = guesses[j].replace(/\s/g, "");
+                    // current is guesses[j] without the spaces
+                    let current = guesses[j].replace(/\s/g, "");
+                    if (current != "") {
+                        lastGuessWithoutSpaces = current;
+                        break;
+                    }
                 }
 
                 console.log("lastGuessWithoutSpaces: " + lastGuessWithoutSpaces);
