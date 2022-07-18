@@ -34,6 +34,15 @@ export default function App() {
   }, {}));
 
   function playAgain() {
+    setSubmitted(LETTERS.split('').reduce((acc, letter) => {
+      acc[letter] = {
+        present: false,
+        correct: false,
+        incorrect: false
+      };
+      return acc;
+    }
+      , {}));
     setSolution(WORDS[Math.floor(Math.random() * WORDS.length)]);
     setGuesses(Array(6).fill(''));
     setWon(false);

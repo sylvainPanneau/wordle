@@ -14,6 +14,7 @@ export default function KeyPop({ letter, setLetter, letterState, setSubmitted, s
         }, 5);
     }
 
+    
     function getLastGuess() {
         let lastGuessWithoutSpaces = "";
         for (let j = guesses.length - 1; j >= 0; j--) {
@@ -25,6 +26,17 @@ export default function KeyPop({ letter, setLetter, letterState, setSubmitted, s
             }
         }
         return lastGuessWithoutSpaces;
+    }
+    
+    function letterInCurrentGuess(letter){
+        let currentGuess = getLastGuess();
+        console.log("currentGuess: " + currentGuess);
+        for (let i = 0; i < currentGuess.length; i++) {
+            if (currentGuess[i] == letter) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function computeKeyFont(letter) {
@@ -108,13 +120,19 @@ export default function KeyPop({ letter, setLetter, letterState, setSubmitted, s
                         for (let i = 0; i < keys.length; i++) {
                             switch (values[i]) {
                                 case "present":
-                                    toSubmitPresent.push(keys[i]);
+                                    if(letterInCurrentGuess(keys[i])){
+                                        toSubmitPresent.push(keys[i]);
+                                    }
                                     break;
                                 case "correct":
-                                    toSubmitCorrect.push(keys[i]);
+                                    if(letterInCurrentGuess(keys[i])){
+                                        toSubmitCorrect.push(keys[i]);
+                                    }
                                     break;
                                 case "incorrect":
-                                    toSubmitIncorrect.push(keys[i]);
+                                    if(letterInCurrentGuess(keys[i])){
+                                        toSubmitIncorrect.push(keys[i]);
+                                    }
                                     break;
 
                                 default:

@@ -57,6 +57,7 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
             }
         }
         else if (letter.length === 1 && letter != "⌫") {
+            console.log("letter: " + letter);
             for (let i = 0; i < guesses.length; i++) {
                 let guess_without_spaces = "";
                 for (let j = 0; j < guesses[i].length; j++) {
