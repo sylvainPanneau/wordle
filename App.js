@@ -9,13 +9,24 @@ import KeyPop from './KeyPop';
 // import ./assets/words.json
 const WORDS = require('./assets/words.json');
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const DURATION = 410;
 
 export default function App() {
   const [solution, setSolution] = useState('');
   const [guesses, setGuesses] = useState(Array(6).fill(''));
   const [won, setWon] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const [submitted, setSubmitted] = useState(LETTERS.split('').map(letter => false));
+  // submitted will be a json with the following structure : "A" : { "present" : true, "correct" : false, "incorrect" : false } etc.
+  const [submitted, setSubmitted] = useState(LETTERS.split('').reduce((acc, letter) => {
+    acc[letter] = {
+      present: false,
+      correct: false,
+      incorrect: false
+    };
+    return acc;
+  }
+    , {}));
+
   // letterState is a json object that keeps track of the state of each letter. Initially, all letters are "unknown"
   const [letterState, setLetterState] = useState(LETTERS.split('').reduce((acc, letter) => {
     acc[letter] = 'unknown';
@@ -31,7 +42,6 @@ export default function App() {
       acc[letter] = 'unknown';
       return acc;
     }, {}));
-    setSubmitted(LETTERS.split('').map(letter => false));
   }
 
   useEffect(() => {
@@ -43,7 +53,9 @@ export default function App() {
   useEffect(() => {
     guesses.map((guess, index) => {
       if (guess == solution && solution != '') {
-        setWon(true);
+        setTimeout(() => {
+          setWon(true);
+        }, DURATION * 4);
       }
     })
     let guess_without_spaces = guesses[guesses.length - 1].replace(/\s/g, "");

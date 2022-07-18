@@ -18,11 +18,12 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
     }
 
     useEffect(() => {
-        if (!isFirstGuess(guess) && guess.length >= 3) setWasSubmitted(false);
+        if (!isFirstGuess(guess) && guess.length === 0) setWasSubmitted(true);
+        if (!isFirstGuess(guess) && guess.length > 0) setWasSubmitted(false);
     }, [guess]);
 
     useEffect(() => {
-        if (letter == "⌫") {
+        if (letter == "⌫" && !wasSubmitted) {
             // replace last letter encoutered in guesses with empty string
             let updated_guess = "";
             let i = 0;
@@ -49,13 +50,13 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
             }
             newGuesses[indexToReplace] = updated_guess;
             console.log("newGuesses[indexToRepalce]: " + newGuesses[indexToReplace]);
-            if (newGuesses[indexToReplace].length > 0) {
+            if (newGuesses[indexToReplace].length >= 0) {
                 setGuesses(newGuesses);
                 setGuess(newGuesses[indexToReplace]);
                 setLetter('');
             }
         }
-        else if (letter.length === 1) {
+        else if (letter.length === 1 && letter != "⌫") {
             for (let i = 0; i < guesses.length; i++) {
                 let guess_without_spaces = "";
                 for (let j = 0; j < guesses[i].length; j++) {
@@ -113,11 +114,6 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
                             wasSubmitted={wasSubmitted}
                             setWasSubmitted={setWasSubmitted}
                             key={index}
-                            color={
-                                letterState[letter] == 'correct' ? "#3eaa42" :
-                                    letterState[letter] == 'incorrect' ? "#8e8e8e" :
-                                        letterState[letter] == 'present' ? "#cd8729" : null
-                            }
                         />
                     )
                 })}
@@ -134,11 +130,6 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
                             wasSubmitted={wasSubmitted}
                             setWasSubmitted={setWasSubmitted}
                             key={index}
-                            color={
-                                letterState[letter] == 'correct' ? "#3eaa42" :
-                                    letterState[letter] == 'incorrect' ? "#8e8e8e" :
-                                        letterState[letter] == 'present' ? "#cd8729" : null
-                            }
                         />
                     )
                 })}
@@ -155,11 +146,6 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
                             setWasSubmitted={setWasSubmitted}
                             guesses={guesses}
                             key={index}
-                            color={
-                                letterState[letter] === 'correct' ? "#3eaa42" :
-                                    letterState[letter] == 'incorrect' ? "#8e8e8e" :
-                                        letterState[letter] == 'present' ? "#cd8729" : null
-                            }
                         />
                     )
                 })}

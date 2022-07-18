@@ -16,12 +16,18 @@ export default function Line({ guess, solution, setLetterState, letterState, sub
 
     function readyToFlip(guess) {
         // return true if all letters in guess have their submitted[letter] value set to true
-        for (let i = 0; i < guess.length; i++) {
-            if (!submitted[guess[i]]) {
-                return false;
+        try {
+            for (let i = 0; i < guess.length; i++) {
+                if (!(submitted[guess[i]]["correct"] || submitted[guess[i]]["present"] || submitted[guess[i]]["incorrect"])) {
+                    return false;
+                }
             }
+            return true;
         }
-        return true;
+        catch (err) {
+            console.log("failed on guess " + guess);
+            return false;
+        }
     }
 
     return (
