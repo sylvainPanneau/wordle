@@ -100,7 +100,18 @@ export default function App() {
       <View style={styles.guessBox}>
         {
           guesses.map((guess, index) => {
-            return <Line guess={guess} key={index} solution={solution} setLetterState={setLetterState} letterState={letterState} setSubmitted={setSubmitted} submitted={submitted} guesses={guesses} />
+            return <Line guess={guess}
+              key={index}
+              solution={solution}
+              setLetterState={setLetterState}
+              letterState={letterState}
+              setSubmitted={setSubmitted}
+              submitted={submitted}
+              guesses={guesses}
+              won={won}
+              gameOver={gameOver}
+              // I might be able to reset colored tiles by checking won or gameOver in the Line component
+            />
           })
         }
       </View>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import AnimatedLetter from './AnimatedLetter';
 
-export default function Line({ guess, solution, setLetterState, letterState, submitted, guesses }) {
+export default function Line({ guess, solution, setLetterState, letterState, submitted, gameOVer, won }) {
     function computeLetterStateValue(letter, index) {
         if (letter == solution[index]) return "correct";
         else if (solution.includes(letter)) return "present";
@@ -44,7 +44,7 @@ export default function Line({ guess, solution, setLetterState, letterState, sub
                         letterStateValue={computeLetterStateValue(letter, index)}
                         setLetterState={setLetterState}
                         readyToFlip={readyToFlip(guessFilled) && guess_without_spaces.length == solution.length}
-                        color={letter == solution[index] ? "#3eaa42" : isLetterInSolution ? "#cd8729" : "#8e8e8e"}
+                        color={ letter == solution[index] ? "#3eaa42" : isLetterInSolution ? "#cd8729" : "#8e8e8e"}
                     >
                     </AnimatedLetter>
                 )
