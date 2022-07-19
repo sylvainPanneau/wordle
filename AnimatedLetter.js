@@ -1,7 +1,17 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Animated, Platform } from 'react-native';
+import { StyleSheet, Animated } from 'react-native';
 
-export default function AnimatedLetter({ index, letter, letterState, setLetterState, readyToFlip, color, letterStateValue }) {
+export default function AnimatedLetter({ 
+    index, 
+    letter, 
+    letterState, 
+    setLetterState, 
+    readyToFlip, 
+    color, 
+    letterStateValue, 
+    won, 
+    gameOver
+ }) {
     // Component that renders a letter capable of vertical flipping
 
     const [flip, setFlip] = useState(new Animated.Value(0));
@@ -11,8 +21,13 @@ export default function AnimatedLetter({ index, letter, letterState, setLetterSt
     const [localColor, setLocalColor] = useState("");
 
     useEffect(() => {
+        if(won || gameOver) {
+            setLocalColor("#8e8e8e");
+        }
+    }, [won, gameOver]);
+
+    useEffect(() => {
         if(letterStateValue === "incorrect"){
-            console.log("letter " + letter + " is incorrect");
             setLetterState({
                 ...letterState,
                 [letter]: "incorrect"
@@ -20,14 +35,12 @@ export default function AnimatedLetter({ index, letter, letterState, setLetterSt
         }
 
         if (letterStateValue === "correct") {
-            console.log("letter " + letter + " is correct");
             setLetterState({
                 ...letterState,
                 [letter]: "correct"
             });
         }
         else if (letterStateValue === "present") {
-            console.log("letter " + letter + " is present");
             setLetterState({
                 ...letterState,
                 [letter]: "present"

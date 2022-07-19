@@ -1,12 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import AnimatedLetter from './AnimatedLetter';
 
-export default function Line({ guess, solution, setLetterState, letterState, submitted, gameOVer, won }) {
+export default function Line({
+    guess,
+    solution,
+    setLetterState,
+    letterState,
+    submitted,
+    gameOVer,
+    won,
+    guesses
+}) {
     function computeLetterStateValue(letter, index) {
         if (letter == solution[index]) return "correct";
         else if (solution.includes(letter)) return "present";
         else return "incorrect";
+    }
+    function computeColorAnimatedLetter(letter, index) {
+        if (letter == solution[index]) return "#3eaa42";
+        else if (solution.includes(letter)) return "#cd8729";
+        else return "#8e8e8e";
     }
     // save guess as guess plus spaces to obtain a string of length WORD_LENGTH
     let guessFilled = guess
@@ -14,9 +28,22 @@ export default function Line({ guess, solution, setLetterState, letterState, sub
         guessFilled = guess + " ".repeat(solution.length - guess.length);
     }
 
+    function count(word) {
+        let count = 0;
+        for (let i = 0; i < guesses.length; i++) {
+            let current = guesses[i].replace(/\s/g, "");
+            if (current == word) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     function readyToFlip(guess) {
         // return true if all letters in guess have their submitted[letter] value set to true
         try {
+            let _count = count(guess);
+            if (!(_count == 0 || _count == 1)) { return false; }
             for (let i = 0; i < guess.length; i++) {
                 if (!(submitted[guess[i]]["correct"] || submitted[guess[i]]["present"] || submitted[guess[i]]["incorrect"])) {
                     return false;
@@ -33,7 +60,6 @@ export default function Line({ guess, solution, setLetterState, letterState, sub
     return (
         <View style={styles.line}>
             {guessFilled.split('').map((letter, index) => {
-                const isLetterInSolution = solution.includes(letter);
                 let guess_without_spaces = guess.replace(/\s/g, "");
                 return (
                     <AnimatedLetter
@@ -44,9 +70,10 @@ export default function Line({ guess, solution, setLetterState, letterState, sub
                         letterStateValue={computeLetterStateValue(letter, index)}
                         setLetterState={setLetterState}
                         readyToFlip={readyToFlip(guessFilled) && guess_without_spaces.length == solution.length}
-                        color={ letter == solution[index] ? "#3eaa42" : isLetterInSolution ? "#cd8729" : "#8e8e8e"}
-                    >
-                    </AnimatedLetter>
+                        color={computeColorAnimatedLetter(letter, index)}
+                        won={won}
+                        gameOver={gameOVer}
+                    />
                 )
             })}
         </View>

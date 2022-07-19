@@ -1,10 +1,16 @@
-import { View, StyleSheet, Text, TouchableOpacity, Button, Pressable, TouchableHighlight, TouchableNativeFeedback } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
 import React from "react";
 import KeyPop from "./KeyPop";
 const WORD_LENGTH = 5;
 
-export default function Keyboard({ setGuesses, guesses, letterState, setSubmitted, submitted }) {
+export default function Keyboard({ 
+    setGuesses, 
+    guesses, 
+    letterState, 
+    setSubmitted, 
+    submitted
+ }) {
     const [letter, setLetter] = useState('');
     const [__index, setIndex] = useState(0);
     const [guess, setGuess] = useState('');
@@ -33,15 +39,12 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
                     for (let j = 0; j < current.length - 1; j++) {
                         updated_guess += current[j];
                     }
-                    console.log("updated_guess: " + updated_guess);
                     break;
                 }
             }
             let newGuesses = [...guesses];
             let indexToReplace = 0;
-            console.log("updated_guess : " + updated_guess);
             for (let i = 0; i < newGuesses.length; i++) {
-                console.log("newGuesses[" + i + "]: " + newGuesses[i]);
                 // if newGuess[i] without its last letter == updated_guess indexToReplace = i
                 if (newGuesses[i].replace(/\s/g, "").slice(0, -1) == updated_guess) {
                     indexToReplace = i;
@@ -49,7 +52,6 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
                 }
             }
             newGuesses[indexToReplace] = updated_guess;
-            console.log("newGuesses[indexToRepalce]: " + newGuesses[indexToReplace]);
             if (newGuesses[indexToReplace].length >= 0) {
                 setGuesses(newGuesses);
                 setGuess(newGuesses[indexToReplace]);
@@ -57,7 +59,6 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
             }
         }
         else if (letter.length === 1 && letter != "⌫") {
-            console.log("letter: " + letter);
             for (let i = 0; i < guesses.length; i++) {
                 let guess_without_spaces = "";
                 for (let j = 0; j < guesses[i].length; j++) {
@@ -66,13 +67,7 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
                     }
                 }
                 setGuess(guess_without_spaces + letter);
-
-                // TRYING TO GET THE LAST GUESS (AKA THE WORD WE WRITE ON THE CURRENT LINE) 
-                // AND SEE IF IT IS OF LENGTH 5 AND !WASSUBMITTED, THEN WE BREAK (WE DON'T ADD A LETTER TO NEXT LINE)
-
-                // THE PROBLEM : I can't manage to get the last guess properly... It always returns the previous guess 
-                // so of course, the condition at line 64 evaluates to true because we have length 5...
-
+                
                 let lastGuessWithoutSpaces = "";
                 for (let j = guesses.length - 1; j >= 0; j--) {
                     // current is guesses[j] without the spaces
@@ -82,8 +77,6 @@ export default function Keyboard({ setGuesses, guesses, letterState, setSubmitte
                         break;
                     }
                 }
-
-                console.log("lastGuessWithoutSpaces: " + lastGuessWithoutSpaces);
 
                 if (lastGuessWithoutSpaces.length === WORD_LENGTH && !wasSubmitted) break;
                 if (guess_without_spaces.length < WORD_LENGTH) {

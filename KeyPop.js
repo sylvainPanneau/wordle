@@ -4,7 +4,16 @@ import * as Haptics from 'expo-haptics';
 
 const WORDS = require('./assets/words.json');
 
-export default function KeyPop({ letter, setLetter, letterState, setSubmitted, submitted, guesses, wasSubmitted, setWasSubmitted }) {
+export default function KeyPop({
+    letter,
+    setLetter,
+    letterState,
+    setSubmitted,
+    submitted,
+    guesses,
+    wasSubmitted,
+    setWasSubmitted
+}) {
     const [pressed, setPressed] = useState(false);
     const [canSubmit, setCanSubmit] = useState(false);
     function animate() {
@@ -14,7 +23,7 @@ export default function KeyPop({ letter, setLetter, letterState, setSubmitted, s
         }, 5);
     }
 
-    
+
     function getLastGuess() {
         let lastGuessWithoutSpaces = "";
         for (let j = guesses.length - 1; j >= 0; j--) {
@@ -27,8 +36,8 @@ export default function KeyPop({ letter, setLetter, letterState, setSubmitted, s
         }
         return lastGuessWithoutSpaces;
     }
-    
-    function letterInCurrentGuess(letter){
+
+    function letterInCurrentGuess(letter) {
         let currentGuess = getLastGuess();
         console.log("currentGuess: " + currentGuess);
         for (let i = 0; i < currentGuess.length; i++) {
@@ -120,17 +129,17 @@ export default function KeyPop({ letter, setLetter, letterState, setSubmitted, s
                         for (let i = 0; i < keys.length; i++) {
                             switch (values[i]) {
                                 case "present":
-                                    if(letterInCurrentGuess(keys[i])){
+                                    if (letterInCurrentGuess(keys[i])) {
                                         toSubmitPresent.push(keys[i]);
                                     }
                                     break;
                                 case "correct":
-                                    if(letterInCurrentGuess(keys[i])){
+                                    if (letterInCurrentGuess(keys[i])) {
                                         toSubmitCorrect.push(keys[i]);
                                     }
                                     break;
                                 case "incorrect":
-                                    if(letterInCurrentGuess(keys[i])){
+                                    if (letterInCurrentGuess(keys[i])) {
                                         toSubmitIncorrect.push(keys[i]);
                                     }
                                     break;
@@ -139,14 +148,6 @@ export default function KeyPop({ letter, setLetter, letterState, setSubmitted, s
                                     break;
                             }
                         }
-                        // setSubmitted({
-                        //     ...submitted,
-                        //     ...toSubmit.reduce((obj, key) => {
-                        //         obj[key] = true;
-                        //         return obj;
-                        //     }, {})
-                        // })
-                        // submitted will be a json with the following structure : "A" : [correct : false, incorrect : false, present : false] ...
                         setSubmitted({
                             ...submitted,
                             ...toSubmitPresent.reduce((obj, key) => {
@@ -196,7 +197,6 @@ export default function KeyPop({ letter, setLetter, letterState, setSubmitted, s
                         styles.letter,
                         computeKeyBackgroundColor(letter),
                         computeKeyFont(letter),
-                        // ((letter != "⌫" && letter != "ENTER") && submitted[letter]["correct"] || submitted[letter]["present"] || submitted[letter]["incorrect"]) && (letterState[letter] === "correct" || letterState[letter] === "incorrect" || letterState[letter] === "present") ? { color: "white" } : { color: "black" }
                     ]
                 }>
                     {letter}

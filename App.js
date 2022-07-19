@@ -4,9 +4,7 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import Line from './Line';
 import Keyboard from './Keyboard';
-import KeyPop from './KeyPop';
 
-// import ./assets/words.json
 const WORDS = require('./assets/words.json');
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const DURATION = 410;
@@ -16,7 +14,8 @@ export default function App() {
   const [guesses, setGuesses] = useState(Array(6).fill(''));
   const [won, setWon] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  // submitted will be a json with the following structure : "A" : { "present" : true, "correct" : false, "incorrect" : false } etc.
+  // submitted will be a json with the following structure : 
+  // "A" : { "present" : true, "correct" : false, "incorrect" : false } etc.
   const [submitted, setSubmitted] = useState(LETTERS.split('').reduce((acc, letter) => {
     acc[letter] = {
       present: false,
@@ -27,7 +26,8 @@ export default function App() {
   }
     , {}));
 
-  // letterState is a json object that keeps track of the state of each letter. Initially, all letters are "unknown"
+  // letterState is a json object that keeps track of the state of each letter. 
+  // Initially, all letters are "unknown"
   const [letterState, setLetterState] = useState(LETTERS.split('').reduce((acc, letter) => {
     acc[letter] = 'unknown';
     return acc;
@@ -56,6 +56,7 @@ export default function App() {
   useEffect(() => {
     // select random word from WORDS
     const randomWord = WORDS[Math.floor(Math.random() * WORDS.length)];
+    console.log("randomWord: " + randomWord);
     setSolution(randomWord);
   }, []);
 
@@ -64,7 +65,7 @@ export default function App() {
       if (guess == solution && solution != '') {
         setTimeout(() => {
           setWon(true);
-        }, DURATION * 4);
+        }, DURATION * 7);
       }
     })
     let guess_without_spaces = guesses[guesses.length - 1].replace(/\s/g, "");
@@ -100,22 +101,28 @@ export default function App() {
       <View style={styles.guessBox}>
         {
           guesses.map((guess, index) => {
-            return <Line guess={guess}
+            return <Line
+              guess={guess}
+              guesses={guesses}
               key={index}
               solution={solution}
               setLetterState={setLetterState}
               letterState={letterState}
               setSubmitted={setSubmitted}
               submitted={submitted}
-              guesses={guesses}
               won={won}
               gameOver={gameOver}
-              // I might be able to reset colored tiles by checking won or gameOver in the Line component
             />
           })
         }
       </View>
-      <Keyboard setGuesses={setGuesses} guesses={guesses} letterState={letterState} setSubmitted={setSubmitted} submitted={submitted} />
+      <Keyboard
+        setGuesses={setGuesses}
+        guesses={guesses}
+        letterState={letterState}
+        setSubmitted={setSubmitted}
+        submitted={submitted}
+      />
       <StatusBar style="dark" hidden={true} />
     </View>
   );
